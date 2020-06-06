@@ -1,5 +1,6 @@
 ![](https://github.com/AbsolutelyNothingToSeeHere/Branch-Dictator/workflows/Build/badge.svg?branch=master)
 ![](https://github.com/AbsolutelyNothingToSeeHere/Branch-Dictator/workflows/Deploy/badge.svg)
+[![codecov](https://codecov.io/gh/AbsolutelyNothingToSeeHere/Branch-Dictator/branch/master/graph/badge.svg)](https://codecov.io/gh/AbsolutelyNothingToSeeHere/Branch-Dictator)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/AbsolutelyNothingToSeeHere/Branch-Dictator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/AbsolutelyNothingToSeeHere/Branch-Dictator/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/AbsolutelyNothingToSeeHere/Branch-Dictator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/AbsolutelyNothingToSeeHere/Branch-Dictator/context:javascript)
 

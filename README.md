@@ -1,3 +1,7 @@
+![](https://github.com/actions/AbsolutelyNothingToSeeHere/Branch-Dictator/workflows/Build/badge.svg?branch=master)
+![](https://github.com/actions/AbsolutelyNothingToSeeHere/Branch-Dictator/workflows/Deploy/badge.svg)
+
+
 # Branch Dictator 👑
 Oh, you thought this was a democracy? Guess again... in this kingdom, branches are micromanaged and admins have less power ¯\\\_(ツ)\_/¯
 

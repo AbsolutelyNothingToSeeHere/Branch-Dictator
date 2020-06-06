@@ -1,0 +1,2 @@
+# Attributions
+This code was entirely self-written, however, parts of this project, have been derived from/shaped by my work on the American Airlines [Hangar](https://github.com/AmericanAirlines/Hangar) project.

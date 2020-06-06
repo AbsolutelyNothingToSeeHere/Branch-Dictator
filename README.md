@@ -1,5 +1,5 @@
-# TypeScript Starter App
-A lightweight Express starter app
+# Branch Dictator 👑
+Oh, you thought this was a democracy? Guess again... in this kingdom, branches are micromanaged and admins have less power ¯\\\_(ツ)\_/¯
 
 ## Development
 ### Environment Variables

@@ -13,7 +13,7 @@ repository.post('/repository', async (req, res) => {
   const githubSignature = headers['x-hub-signature'];
   const hash = crypto.createHmac('sha1', webhookSecret).update(JSON.stringify(body)).digest('hex');
 
-  if (!githubSignature || hash !== githubSignature) {
+  if (!githubSignature || `sha1=${hash}` !== githubSignature) {
     // Unauthorized request
     res.sendStatus(401);
     return;

@@ -1,26 +1,22 @@
-/* eslint-disable @typescript-eslint/no-var-requires, global-require */
+/* eslint-disable @typescript-eslint/no-var-requires, global-require, import/first */
 import 'jest';
 import crypto from 'crypto';
-import express from 'express';
 import supertest from 'supertest';
+import { mockRepositoryWebhookResponse } from '../../data/github';
+import github from '../../../utils/github';
 
-const processExitSpy = jest.spyOn(process, 'exit').mockImplementation();
+process.env.WEBHOOK_SECRET = 'shhhh';
+import { app } from '../../../app';
+import logger from '../../../logger';
 
-let app: express.Application;
+const branchProtectionUpdateSpy = jest.spyOn(github.repos, 'updateBranchProtection');
+const loggerErrorSpy = jest.spyOn(logger, 'error').mockImplementation();
+
 describe('/api/webhook/repository', () => {
   beforeEach(() => {
     jest.resetModules();
-    process.env.WEBHOOK_SECRET = 'shhhh';
-    app = require('../../../app').app;
-  });
-
-  it('will exit with a non-zero error code if the webhook env var is missing', () => {
-    process.env.WEBHOOK_SECRET = '';
-    process.env.NODE_ENV = 'development';
-    jest.resetModules();
-    require('../../../app');
-    // expect(loggerErrorSpy).toBeCalled();
-    expect(processExitSpy).toBeCalled();
+    jest.resetAllMocks();
+    branchProtectionUpdateSpy.mockImplementation(null).mockResolvedValue(null);
   });
 
   it('will return a 401 if called without a X-Hub-Signature header', async () => {
@@ -38,15 +34,51 @@ describe('/api/webhook/repository', () => {
     expect(eventResponse.status).toEqual(401);
   });
 
-  it('will return a 200 if the hashed body equals the signature', async () => {
-    const body = {
-      event: 'Something happened!',
-    };
+  it('will return a 200 if the hashed body equals the signature and the action is not created', async () => {
+    const body = mockRepositoryWebhookResponse;
     const hash = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET).update(JSON.stringify(body)).digest('hex');
     const eventResponse = await supertest(app)
       .post('/api/webhook/repository')
       .send(body)
       .set({ 'X-Hub-Signature': hash });
     expect(eventResponse.status).toEqual(200);
+    expect(branchProtectionUpdateSpy).not.toBeCalled();
+  });
+
+  it('will call the github API to update branch protection if action is created', async () => {
+    const body = mockRepositoryWebhookResponse;
+    body.action = 'created';
+    body.repository.default_branch = 'anotherBranch';
+    const hash = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET).update(JSON.stringify(body)).digest('hex');
+    const eventResponse = await supertest(app)
+      .post('/api/webhook/repository')
+      .send(body)
+      .set({ 'X-Hub-Signature': hash });
+    expect(branchProtectionUpdateSpy).toBeCalled();
+    const requestOptions = branchProtectionUpdateSpy.mock.calls[0][0];
+    expect(requestOptions.branch).toEqual(body.repository.default_branch);
+    expect(requestOptions.repo).toEqual(body.repository.name);
+    expect(requestOptions.owner).toEqual(body.repository.owner.login);
+    expect(requestOptions.enforce_admins).toEqual(true);
+    expect(eventResponse.status).toEqual(200);
+  });
+
+  it('will log an error if the github request fails', async () => {
+    jest.resetAllMocks();
+    branchProtectionUpdateSpy.mockImplementation(() => {
+      throw new Error('This is a mocked failure... neat');
+    });
+
+    const body = mockRepositoryWebhookResponse;
+    body.action = 'created';
+    const hash = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET).update(JSON.stringify(body)).digest('hex');
+    const eventResponse = await supertest(app)
+      .post('/api/webhook/repository')
+      .send(body)
+      .set({ 'X-Hub-Signature': hash });
+
+    expect(branchProtectionUpdateSpy).toBeCalled();
+    expect(loggerErrorSpy).toBeCalled();
+    expect(eventResponse.status).toEqual(500);
   });
 });

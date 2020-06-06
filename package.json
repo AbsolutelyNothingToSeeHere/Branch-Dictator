@@ -1,7 +1,7 @@
 {
-  "name": "typescript-starter-app",
+  "name": "branch-dictator",
   "version": "0.0.1",
-  "description": "A lightweight TypeScript app with an Express.js server",
+  "description": "An app to forcefully control branch protection within repos",
   "scripts": {
     "dev": "npm-run-all -l build -p build:watch start:watch",
     "start": "node dist/index.js",

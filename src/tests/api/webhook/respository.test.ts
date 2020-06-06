@@ -46,7 +46,7 @@ describe('/api/webhook/repository', () => {
     const eventResponse = await supertest(app)
       .post('/api/webhook/repository')
       .send(body)
-      .set({ 'X-Hub-Signature': hash });
+      .set({ 'X-Hub-Signature': `sha1=${hash}` });
     expect(eventResponse.status).toEqual(200);
   });
 });

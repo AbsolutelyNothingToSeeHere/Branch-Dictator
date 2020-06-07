@@ -53,7 +53,7 @@ describe('/api/webhook/repository', () => {
     const eventResponse = await supertest(app)
       .post('/api/webhook/repository')
       .send(body)
-      .set({ 'X-Hub-Signature': hash });
+      .set({ 'X-Hub-Signature': `sha1=${hash}` });
     expect(branchProtectionUpdateSpy).toBeCalled();
     const requestOptions = branchProtectionUpdateSpy.mock.calls[0][0];
     expect(requestOptions.branch).toEqual(body.repository.default_branch);
@@ -75,7 +75,7 @@ describe('/api/webhook/repository', () => {
     const eventResponse = await supertest(app)
       .post('/api/webhook/repository')
       .send(body)
-      .set({ 'X-Hub-Signature': hash });
+      .set({ 'X-Hub-Signature': `sha1=${hash}` });
 
     expect(branchProtectionUpdateSpy).toBeCalled();
     expect(loggerErrorSpy).toBeCalled();

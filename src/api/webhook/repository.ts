@@ -22,6 +22,9 @@ repository.post('/repository', async (req, res) => {
   const event = body as RepositoryWebhookPayload;
   if (event.action === 'created') {
     try {
+      // Give GitHub a 500ms a create the first commmit/branch
+      // Without this, we'll make the request too quickly and the request will fail with  404
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await github.repos.updateBranchProtection({
         branch: event.repository.default_branch,
         repo: event.repository.name,
@@ -32,7 +35,7 @@ repository.post('/repository', async (req, res) => {
         restrictions: null,
       });
     } catch (error) {
-      logger.error('Something went wrong updating branch protection:', error);
+      logger.error(`Something went wrong updating branch protection: ${error.message} - `, error);
       res.sendStatus(500);
       return;
     }

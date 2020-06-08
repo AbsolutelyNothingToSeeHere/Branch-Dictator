@@ -27,7 +27,7 @@ This app uses a GitHub Action to deploy to Heroku; if you'd prefer to use your o
 Create a new [Heroku Authorization](https://dashboard.heroku.com/account/applications/authorizations/new) with a description of `Branch Dictator API Key` or something similar, leave **Expires after (seconds)** blank, and hit **Create**.
 
 ##### `HEROKU_APP_NAME`
-Chose a name for your app in Heroku. This name must be unique across all of Heroku, so make sure to use something like your GitHub org name to make it unique (e.g., `some-org-branch-dictator`).
+Choose a name for your app in Heroku. This name must be unique across all of Heroku, so make sure to use something like your GitHub org name to make it unique (e.g., `some-org-branch-dictator`).
 
 ##### `HEROKU_EMAIL`
 The email account associated with your Heroku account. This can be found in your [Heroku Account Settings](https://dashboard.heroku.com/account).

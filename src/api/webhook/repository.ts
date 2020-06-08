@@ -22,8 +22,8 @@ repository.post('/repository', async (req, res) => {
   const event = body as RepositoryWebhookPayload;
   if (event.action === 'created') {
     try {
-      // Give GitHub a 500ms a create the first commmit/branch
-      // Without this, we'll make the request too quickly and the request will fail with  404
+      // Give GitHub 500ms to create the first commmit/branch
+      // Without this, we'll make the request too quickly and the request will fail with a 404
       await new Promise((resolve) => setTimeout(resolve, 500));
       await github.repos.updateBranchProtection({
         branch: event.repository.default_branch,

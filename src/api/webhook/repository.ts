@@ -34,8 +34,19 @@ repository.post('/repository', async (req, res) => {
         required_status_checks: null,
         restrictions: null,
       });
+
+      // Create issue on repo tagging repo creator
+      await github.issues.create({
+        title: 'NOTICE: Branch protection enabled',
+        body: `Hey there @${event.sender.login} :wave:\n
+Branch protection was just enabled for this repo for the \`${event.repository.default_branch}\` branch.\n
+Once your repo has CI tasks, we'd encourage you to enable the **Require status checks to pass before merging** \
+option in your [branch settings](../settings/branches).`,
+        repo: event.repository.name,
+        owner: event.repository.owner.login,
+      });
     } catch (error) {
-      logger.error(`Something went wrong updating branch protection: ${error.message} - `, error);
+      logger.error(`Something went wrong updating branch protection or creating an issue: ${error.message} - `, error);
       res.sendStatus(500);
       return;
     }

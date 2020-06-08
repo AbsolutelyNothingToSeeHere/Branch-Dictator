@@ -7,6 +7,7 @@ export interface RepositoryWebhookPayload {
     owner: {
       login: string;
     };
+    private: boolean;
     default_branch: string;
   };
   // organization

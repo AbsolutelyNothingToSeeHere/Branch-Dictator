@@ -93,4 +93,32 @@ describe('/api/webhook/repository', () => {
     expect(loggerErrorSpy).toBeCalled();
     expect(eventResponse.status).toEqual(500);
   });
+
+  it('will call the github API to update branch protection if action is created', async () => {
+    const body = { ...mockRepositoryWebhookResponse };
+    body.action = 'created';
+    body.repository.private = true;
+    const hash = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET).update(JSON.stringify(body)).digest('hex');
+    const eventResponse = await supertest(app)
+      .post('/api/webhook/repository')
+      .send(body)
+      .set({ 'X-Hub-Signature': `sha1=${hash}` });
+    expect(branchProtectionUpdateSpy).not.toBeCalled();
+    expect(issueCreationSpy).not.toBeCalled();
+    expect(eventResponse.status).toEqual(200);
+  });
+
+  it('will ignore a creation event if the repository object is missing', async () => {
+    const body = { ...mockRepositoryWebhookResponse };
+    body.action = 'created';
+    delete body.repository;
+    const hash = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET).update(JSON.stringify(body)).digest('hex');
+    const eventResponse = await supertest(app)
+      .post('/api/webhook/repository')
+      .send(body)
+      .set({ 'X-Hub-Signature': `sha1=${hash}` });
+    expect(branchProtectionUpdateSpy).not.toBeCalled();
+    expect(issueCreationSpy).not.toBeCalled();
+    expect(eventResponse.status).toEqual(200);
+  });
 });

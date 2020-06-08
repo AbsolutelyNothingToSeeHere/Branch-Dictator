@@ -20,7 +20,7 @@ repository.post('/repository', async (req, res) => {
   }
 
   const event = body as RepositoryWebhookPayload;
-  if (event.action === 'created') {
+  if (event.action === 'created' && event.repository?.private === false) {
     try {
       // Give GitHub a 1000ms a create the first commmit/branch
       // Without this, we'll make the request too quickly and the request will fail with  404

@@ -53,7 +53,7 @@ This project also uses [LGTM](https://lgtm.com) for codescanning. If you'd like 
 Once your app is deployed and ready to go, you'll need to create a webhook to ensure the app is notified when repos are created. Head to your org's settings page and navigate to the **Webhooks** section. Click **Add webhook** and use the following values:
 - Payload URL: `{your-app's-URL}/api/webhook/repository}` (e.g., https://my-branch-dictator/api/webhook/repository)
 - Content type: `application/json`
-- Secret: Your secret from the [`WEBHOOK_SECRET`](#webhook-secret) section above
+- Secret: Your secret from the [`WEBHOOK_SECRET`](#webhook_secret) section above
 - SSL verification: :white_check_mark: `Enable SSL Verification`
 - Which events would you like to trigger this webhook?: `Let me select individual events` - uncheck all except:
   - `Repositories`

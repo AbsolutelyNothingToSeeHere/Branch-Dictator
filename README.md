@@ -15,7 +15,7 @@ Interested in using Branch Dictator to keep your kingdom in line? Let's get star
 The first step to setting up your own instance of Branch Dictator is to fork this repo. It's designed to be used within an org, so make sure to fork this repo into an org, not under a personal account. If you don't have an org, you can [create one for free](https://github.com/organizations/plan)!
 
 ### CI/CD
-This app uses GitHub Secrets in conjunction with GitHub Actions to perform all CI and CD actions. After forking into your org, head over to [your app's Secrets](../settings/secrets) and set the following values:
+This app uses GitHub Secrets in conjunction with GitHub Actions to perform all CI and CD actions. After forking into your org, head over to [your app's Secrets](../../settings/secrets) and set the following values:
 
 #### `CODECOV_API_KEY`
 This project uses Codecov for coverage analysis. Navigate to `codecov.io` and follow the steps to link your org and repo. When you're done, you'll be provided with an API key.

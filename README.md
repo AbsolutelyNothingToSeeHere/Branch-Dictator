@@ -8,6 +8,8 @@
 # Branch Dictator 👑
 Oh, you thought this was a democracy? Guess again... in this kingdom, branches are micromanaged and admins have less power ¯\\\_(ツ)\_/¯
 
+_**Branch Dictator**_ will enable [Branch Protection](https://help.github.com/en/github/administering-a-repository/about-protected-branches) for all new org repos that are created with public visibility and are created with an initial branch (via the addition of a `README.md`, `LICENSE`, and/or `.gitignore` when the repo is created).
+
 ## Setup
 Interested in using Branch Dictator to keep your kingdom in line? Let's get started.
 
